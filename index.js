@@ -12,17 +12,27 @@ async function scrape() {
     // Vamos a la url indicada
     // y esperemos que cargue con await
     await page.goto('https://www.thesaurus.com/browse/smart');
-
-    // Dentro de la page html buscamos el selector de 
-    // Donde se encuentra la información y lo guardamos en la variable
-    var element = await page.waitForSelector('#meanings > div.css-ixatld.e15rdun50 > ul > li:nth-child(1) > a');
-    // evaluamos en la pagina el selector que escogimos 
-    // y sacamos el texto del contenido para guardarlo en una variable
-    var text = await page.evaluate(element => element.textContent,element);
+    var i = 1;
+    while(i < 101){
+        try{
+            // Dentro de la page html buscamos el selector de 
+            // Donde se encuentra la información y lo guardamos en la variable
+            var element = await page.waitForSelector('#meanings > div.css-ixatld.e15rdun50 > ul > li:nth-child('+i+') > a');
+            // evaluamos en la pagina el selector que escogimos 
+            // y sacamos el texto del contenido para guardarlo en una variable
+            var text = await page.evaluate(element => element.textContent,element);
+            
+            // imprimimos el resultado
+            console.log("palabra: "+i, text);
+            i++;
+            
+        }
+        catch(e){
+            break;
+        }
+    }
     
-    // imprimimos el resultado
-    console.log(text);
-    
+    console.log('END...');
     browser.close();
 }
 
